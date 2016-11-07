@@ -9000,3 +9000,51 @@ const issues = [
     "url": "https://api.github.com/repos/learn-co-curriculum/js-donut-lab/issues/2"
   }
 ];
+
+var issuesWithUpdatedApiUrl = issues.map(issue => {
+  let newIssue = Object.assign({}, issue);
+
+  newIssue.url = issue.url.replace('api.github.com', 'api-v2.github.com');
+  return newIssue;
+});
+
+var commentCountAcrossIssues = issues.reduce((total, issue) => {
+  return total += issue.comments_count;
+}, 0);
+
+var openIssues = issues.filter(issue => {
+  return issue.state === 'open';
+});
+
+var nonAutomaticIssues = issues.filter(issue => {
+  return issue.body !== 'This pull request has been automatically created by learn.co.';
+});
+
+var tableHTMLstring = nonAutomaticIssues.map(issue => {
+  return `<tr><td>${issue.body}</td><td>${issue.created_at}</td><td>${issue.state}</td></tr>`;
+});
+
+
+document.querySelector('tbody#results').innerHTML = tableHTMLstring.join("")
+// $('tbody#results').html(tableHTMLstring)
+
+// [
+//   {
+//     "body": "Instructions say GET /team and POST /newteam. Rspec wants GET/newteam and POST/team.",
+//     "created_at": "2016-03-31 16:23:13 UTC",
+//     "comments_count": 0,
+//     "id": 144948778,
+//     "number": 7,
+//     "state": "closed",
+//     "url": "https://api.github.com/repos/learn-co-curriculum/basic-sinatra-forms-lab/issues/7"
+//   },
+//   {
+//     "body": "This pull request has been automatically created by learn.co.",
+//     "created_at": "2016-03-28 03:25:56 UTC",
+//     "comments_count": 1,
+//     "id": 143883618,
+//     "number": 3,
+//     "state": "closed",
+//     "url": "https://api.github.com/repos/learn-co-curriculum/angular-what-is-the-event-system-readme/issues/3"
+//   }
+// ]
